@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "adapterVersion": "1.0.0",
+  "upstreamCommit": "47f943859bef60e4160492346772ded9b24f765a",
+  "packageVersion": "0.1.0-rc.5",
+  "controlledFiles": [
+    {
+      "path": "packages/attachment/prompt-image-bridge/package.json",
+      "beforeExists": false,
+      "beforeSha256": null,
+      "afterSha256": "515db4cf4cedfe844872e079dc870e91193a9e2ef5c7dc6229070f692e011a31"
+    },
+    {
+      "path": "packages/attachment/prompt-image-bridge/README.i18n.yaml",
+      "beforeExists": false,
+      "beforeSha256": null,
+      "afterSha256": "32332ef6d908cf81b407b16d5f8897ce74c279c252cabcfd5c29d6ca0bef8bef"
+    },
+    {
+      "path": "packages/attachment/prompt-image-bridge/README.md",
+      "beforeExists": false,
+      "beforeSha256": null,
+      "afterSha256": "906f317a0d5149e71acf57a3fad60aa4e8d51823a2f6d88ccc0756884357d785"
+    },
+    {
+      "path": "packages/attachment/prompt-image-bridge/README.zh.md",
+      "beforeExists": false,
+      "beforeSha256": null,
+      "afterSha256": "7dc4dfdb855cbad9f2e4e5d67741e350ca1affa866fa0b2b652db68b39dfa2c7"
+    },
+    {
+      "path": "packages/attachment/prompt-image-bridge/tsconfig.json",
+      "beforeExists": false,
+      "beforeSha256": null,
+      "afterSha256": "d32b87f988fe8319d62a37d42da0f98f697e3bb27ba83937775884e5a4cb7098"
+    },
+    {
+      "path": "packages/attachment/prompt-image-bridge/src/index.ts",
+      "beforeExists": false,
+      "beforeSha256": null,
+      "afterSha256": "6220302a21dddd06a171e9645c385b8e064c4f57912104046892d25386e67e6c"
+    },
+    {
+      "path": "packages/attachment/prompt-image-bridge/src/invariant.ts",
+      "beforeExists": false,
+      "beforeSha256": null,
+      "afterSha256": "16887e5e3cdc58432efcb633b8164b165a3913d1ec4ccefec407633cef225118"
+    },
+    {
+      "path": "packages/attachment/prompt-image-bridge/tests/bridge.spec.ts",
+      "beforeExists": false,
+      "beforeSha256": null,
+      "afterSha256": "9140c4edba5d52c783bc1e39eb6850548be0dfc3d6f8e69ea9de2bfca3c15490"
+    },
+    {
+      "path": "packages/attachment/prompt-image-bridge/tests/loader-composition.spec.ts",
+      "beforeExists": false,
+      "beforeSha256": null,
+      "afterSha256": "b37555eaf56378a16f26419b71033e842f3e9f4665ad7dc68e458b2941195da2"
+    },
+    {
+      "path": "packages/host/apiproxy/src/api-proxy.ts",
+      "beforeExists": true,
+      "beforeSha256": "8af1f96a31b035a0e5f4a8ef3904212dce3985446c4790b9a4b5149fda76fbb9",
+      "afterSha256": "9c568fa5d3ba1132be7245dd7f550f64d2c122b075327f1dd83f55bc4040fff2"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "beforeExists": true,
+      "beforeSha256": "6177ec61bdb8194eb5a606813a62ffb0ab2cc7fdfe2cd6e0249dcbfe4bce58e0",
+      "afterSha256": "60514250810d48fd70fff61c36fdf9f867cbd7f965beced013cfa710f314e7f2"
+    },
+    {
+      "path": "tsconfig.host.json",
+      "beforeExists": true,
+      "beforeSha256": "1f9b639c98afe5347bbf6c56cb75bd5502a58e94ac625702c78be60bc0522011",
+      "afterSha256": "e3a7f7920ac36d0e33a5944045ab31b36061384e11b81e0af552c09b81b70c2d"
+    }
+  ],
+  "requiredMounts": [
+    {
+      "path": "%USERPROFILE%/.dsh/cordis.patch.yml",
+      "scope": "machine-local",
+      "requiredForLive": true,
+      "expectedContains": "@deepseek-ai/dsh-prompt-image-bridge"
+    }
+  ],
+  "patchPlan": {
+    "applyCheck": [
+      "git",
+      "apply",
+      "--check",
+      "--whitespace=nowarn"
+    ],
+    "reverseCheck": [
+      "git",
+      "apply",
+      "--reverse",
+      "--check",
+      "--whitespace=nowarn"
+    ]
+  },
+  "dependencyStrategy": {
+    "offline": [
+      "pnpm",
+      "install",
+      "--offline",
+      "--frozen-lockfile"
+    ],
+    "pinned": [
+      "pnpm",
+      "install",
+      "--frozen-lockfile"
+    ]
+  },
+  "testCommands": [
+    [
+      "pnpm",
+      "exec",
+      "vitest",
+      "run",
+      "packages/attachment/prompt-image-bridge/tests/bridge.spec.ts",
+      "packages/attachment/prompt-image-bridge/tests/loader-composition.spec.ts"
+    ],
+    [
+      "pnpm",
+      "run",
+      "build:lib:host"
+    ]
+  ],
+  "excludedPaths": [
+    "packages/subagent/**",
+    "packages/client/ui-subagent-mode/**",
+    "packages/workspace/**",
+    "packages/browser/**",
+    "packages/session/**",
+    "packages/**/session-delete/**",
+    "packages/**/workspace-browser/**",
+    "packages/**/logs/**",
+    "packages/**/build/**",
+    "packages/**/lib/**",
+    "packages/attachment/prompt-image-bridge/lib/**",
+    "packages/attachment/prompt-image-bridge/node_modules/**",
+    "node_modules/**",
+    ".dsh/**",
+    "logs/**",
+    "build/**"
+  ],
+  "mountAudit": {
+    "required": [
+      {
+        "path": "%USERPROFILE%/.dsh/cordis.patch.yml",
+        "scope": "machine-local",
+        "controlled": false,
+        "requiredForLive": true,
+        "reason": "Mount prompt-image-bridge into the active Cordis profile; this file is outside the Harness checkout."
+      }
+    ],
+    "policy": "The adapter audits this external mount but never writes it. A missing or unreviewed mount blocks live acceptance."
+  },
+  "sourceAudit": {
+    "sourceCommit": "47f943859bef60e4160492346772ded9b24f765a",
+    "sourceType": "accepted-local-diff-and-untracked-package",
+    "acceptedFiles": [
+      "packages/attachment/prompt-image-bridge/package.json",
+      "packages/attachment/prompt-image-bridge/README.i18n.yaml",
+      "packages/attachment/prompt-image-bridge/README.md",
+      "packages/attachment/prompt-image-bridge/README.zh.md",
+      "packages/attachment/prompt-image-bridge/tsconfig.json",
+      "packages/attachment/prompt-image-bridge/src/index.ts",
+      "packages/attachment/prompt-image-bridge/src/invariant.ts",
+      "packages/attachment/prompt-image-bridge/tests/bridge.spec.ts",
+      "packages/attachment/prompt-image-bridge/tests/loader-composition.spec.ts",
+      "packages/host/apiproxy/src/api-proxy.ts",
+      "pnpm-lock.yaml",
+      "tsconfig.host.json"
+    ],
+    "excludedFiles": [
+      "subagent-mode",
+      "workspace-browser",
+      "session-delete",
+      "logs",
+      "build-output",
+      "packages/attachment/prompt-image-bridge/lib",
+      "packages/attachment/prompt-image-bridge/node_modules",
+      "unrelated-dirty-files"
+    ],
+    "externalMount": "%USERPROFILE%/.dsh/cordis.patch.yml",
+    "notes": "The payload was generated from the clean upstream commit plus the reviewed prompt-image-bridge postimage. The audited E-drive checkout contained unrelated dirty files; none are included. Generated lib and node_modules content is excluded."
+  }
+}

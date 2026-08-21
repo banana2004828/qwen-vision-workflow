@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "repository": "https://github.com/QwenLM/Qwen-MM-Plugins",
+  "tag": "qwen-mm-plugins-api-v1.0.1",
+  "tagObject": "09fcc4e38ee1d359f714d17da7b4bb5acf61e9d7",
+  "commit": "ef18102f374cf9465188081622222b284a823174",
+  "capability": "api",
+  "packageVersion": "1.0.1",
+  "license": "Apache-2.0",
+  "skillRawUrl": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/ef18102f374cf9465188081622222b284a823174/src/capabilities/api/skill/SKILL.md",
+  "skillFiles": [
+    {
+      "path": "SKILL.md",
+      "rawUrl": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/ef18102f374cf9465188081622222b284a823174/src/capabilities/api/skill/SKILL.md",
+      "sha256": "b5e7f27707f6d0221dbb705da9e4615079a2f90ae36dacf193cbf0d99a331967"
+    },
+    {
+      "path": "references/vision_chat.md",
+      "rawUrl": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/ef18102f374cf9465188081622222b284a823174/src/capabilities/api/skill/references/vision_chat.md",
+      "sha256": "f402c7e9955652217174427711e3806c715b6301f9196c1b87055194b185ed19"
+    },
+    {
+      "path": "references/launch_sam3_server.py",
+      "rawUrl": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/ef18102f374cf9465188081622222b284a823174/src/capabilities/api/skill/references/launch_sam3_server.py",
+      "sha256": "12bf2a6d8a6dff6220a9c8442428cb241f68a544650406059078241c256ecfb9"
+    }
+  ],
+  "mcp": {
+    "serverName": "qwen-mm-api",
+    "command": "uvx",
+    "from": "qwen-mm-plugins[api] @ git+https://github.com/QwenLM/Qwen-MM-Plugins.git@ef18102f374cf9465188081622222b284a823174",
+    "args": [
+      "--from",
+      "qwen-mm-plugins[api] @ git+https://github.com/QwenLM/Qwen-MM-Plugins.git@ef18102f374cf9465188081622222b284a823174",
+      "qwen-mm-plugins-api"
+    ]
+  },
+  "capabilities": [
+    "vision_chat",
+    "ocr",
+    "grounding",
+    "transcribe_audio",
+    "segmentation",
+    "omni_asr",
+    "omni_asr_timestamped",
+    "omni_multi_speaker_asr",
+    "omni_av_caption",
+    "omni_av_grounding",
+    "omni_av_counting",
+    "omni_music_caption"
+  ]
+}

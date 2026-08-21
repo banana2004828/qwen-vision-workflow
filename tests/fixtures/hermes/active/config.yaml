@@ -1,0 +1,10 @@
+model: deepseek-v4-pro
+platform: deepseek
+agent:
+  image_input_mode: off
+auxiliary:
+  vision:
+    provider: none
+    model: none
+tools:
+  vision: legacy-disabled

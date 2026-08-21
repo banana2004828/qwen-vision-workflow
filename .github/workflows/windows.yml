@@ -1,0 +1,63 @@
+name: Windows validation
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  powershell-5:
+    name: Windows PowerShell 5.1
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run full test suite
+        shell: powershell
+        run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tests\run.ps1
+      - name: Package and inspect inventory
+        shell: powershell
+        run: |
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\package.ps1 -Version 1.0.0 -OutputDirectory .\dist
+          $zip = Join-Path (Get-Location) 'dist\qwen-vision-workflow-1.0.0-windows.zip'
+          if (-not (Test-Path -LiteralPath $zip -PathType Leaf)) { throw 'Package ZIP was not created.' }
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $archive = [System.IO.Compression.ZipFile]::OpenRead($zip)
+          try {
+            $names = @($archive.Entries | ForEach-Object { $_.FullName })
+            if (-not ($names -contains '安装千问视觉.cmd')) { throw 'Installer entry is missing.' }
+            if (-not ($names -contains '千问视觉管理.cmd')) { throw 'Management entry is missing.' }
+            $joined = [string]::Join("`n", $names)
+            if ($joined -match '(?i)(^|/)(?:\.env|\.git|backups|sessions)(?:/|$)|\.log$|(^|/)task-[^/]+\.md$|(^|/)docs/superpowers(?:/|$)') { throw 'Private or historical entry found.' }
+          }
+          finally { $archive.Dispose() }
+
+  powershell-7:
+    name: PowerShell 7
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run full test suite
+        shell: pwsh
+        run: pwsh -NoProfile -File .\tests\run.ps1
+      - name: Package and verify hash
+        shell: pwsh
+        run: |
+          pwsh -NoProfile -File .\scripts\package.ps1 -Version 1.0.0 -OutputDirectory .\dist
+          $zip = Join-Path (Get-Location) 'dist\qwen-vision-workflow-1.0.0-windows.zip'
+          $hashFile = $zip + '.sha256'
+          if (-not (Test-Path -LiteralPath $zip -PathType Leaf)) { throw 'Package ZIP was not created.' }
+          if (-not (Test-Path -LiteralPath $hashFile -PathType Leaf)) { throw 'Package SHA-256 file was not created.' }
+          $expected = ((Get-Content -LiteralPath $hashFile -Raw) -split '\s+')[0].ToLowerInvariant()
+          $actual = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($expected -ne $actual) { throw 'Package SHA-256 does not match.' }
+      - name: Compare canonical PS5 and PS7 package bytes
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path .\dist-ps5 -Force | Out-Null
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\package.ps1 -Version 1.0.0 -OutputDirectory .\dist-ps5
+          $name = 'qwen-vision-workflow-1.0.0-windows.zip'
+          $ps5 = (Get-FileHash -LiteralPath (Join-Path '.\dist-ps5' $name) -Algorithm SHA256).Hash
+          $ps7 = (Get-FileHash -LiteralPath (Join-Path '.\dist' $name) -Algorithm SHA256).Hash
+          if ($ps5 -ne $ps7) { throw 'PS5 and PS7 package bytes differ.' }
