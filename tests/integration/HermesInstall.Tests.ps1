@@ -270,7 +270,7 @@ Describe-Qvw 'Hermes transactional installation' {
         Assert-QvwMatch $skill '(?i)doctor'
         Assert-QvwMatch $skill '(?i)verify'
         Assert-QvwMatch $skill '(?i)rollback'
-        Assert-QvwMatch $skill '(?i)(禁止|must not|never).*(安全|security).*(配置|config)'
+        Assert-QvwMatch $skill '(?i)Never edit security-sensitive config inside a Hermes conversation\.'
         Assert-QvwNotMatch $skill 'tools\.vision\s*[:=]'
         Assert-QvwMatch $reference 'qwen3\.7-plus'
         Assert-QvwMatch $reference 'DASHSCOPE_BASE_URL'

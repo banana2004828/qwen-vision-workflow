@@ -13,25 +13,6 @@ jobs:
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
-      - name: Diagnose the failing diagnostics test in Windows PowerShell 5.1
-        shell: powershell
-        run: |
-          . .\tests\TestHarness.ps1
-          Get-ChildItem -LiteralPath .\modules -Filter '*.psm1' -File -Recurse | Sort-Object FullName | ForEach-Object {
-            Import-Module -Name $_.FullName -Force -ErrorAction Stop
-          }
-          $Error.Clear()
-          $captured = @(. .\tests\integration\Diagnostics.Tests.ps1 *>&1)
-          foreach ($record in @($captured | Where-Object { $_ -is [System.Management.Automation.ErrorRecord] })) {
-            Write-Host ("captured-error: type={0}; category={1}; id={2}" -f $record.Exception.GetType().Name, $record.CategoryInfo.Category, $record.FullyQualifiedErrorId)
-          }
-          foreach ($case in @(Get-QvwTestCases)) {
-            Write-Host ("case: name={0}; passed={1}; error={2}" -f $case.Name, $case.Passed, $case.Error)
-          }
-          foreach ($record in @($Error)) {
-            Write-Host ("error-list: type={0}; category={1}; id={2}" -f $record.Exception.GetType().Name, $record.CategoryInfo.Category, $record.FullyQualifiedErrorId)
-          }
-          if (@(Get-QvwTestCases | Where-Object { -not $_.Passed }).Count -gt 0 -or $Error.Count -gt 0) { throw 'Diagnostics test emitted a safe diagnostic failure.' }
       - name: Run full test suite
         shell: powershell
         run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tests\run.ps1
