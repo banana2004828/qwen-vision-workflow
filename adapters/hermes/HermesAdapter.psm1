@@ -1075,7 +1075,14 @@ function Test-QvwHermesVisionFacts {
     $greenBelowBlue = $false
     $redContradiction = $false
     $blueContradiction = $false
-    $segments = @([regex]::Split($value, '[.!?;\r\n。！？；]+') | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) })
+    $fullWidthSentencePunctuation = -join @(
+        [char]0x3002
+        [char]0xFF01
+        [char]0xFF1F
+        [char]0xFF1B
+    )
+    $sentenceBoundaryPattern = '[.!?;\r\n' + [regex]::Escape($fullWidthSentencePunctuation) + ']+'
+    $segments = @([regex]::Split($value, $sentenceBoundaryPattern) | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) })
     foreach ($rawSegment in $segments) {
         $segment = ([string]$rawSegment -replace '\s+', ' ').Trim()
         if ([string]::IsNullOrWhiteSpace($segment)) { continue }

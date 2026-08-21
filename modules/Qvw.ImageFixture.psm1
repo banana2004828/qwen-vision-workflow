@@ -1,6 +1,12 @@
 Set-StrictMode -Version 2.0
 
-$script:QvwImageFixtureText = '千问视觉 QVW-7319'
+$script:QvwImageFixtureText = -join @(
+    [char]0x5343
+    [char]0x95EE
+    [char]0x89C6
+    [char]0x89C9
+    ' QVW-7319'
+)
 $script:QvwImageFixtureRelations = @(
     'red circle left of blue square',
     'green triangle below red circle',

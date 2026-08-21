@@ -12,6 +12,16 @@ Describe-Qvw 'Deterministic Windows package' {
         Assert-QvwContains @($command.Parameters['OutputDirectory'].Aliases) 'OutputPath'
     }
 
+    It-Qvw 'keeps allowlisted PowerShell source parseable by Windows PowerShell 5.1' {
+        foreach ($relative in @(Get-QvwPackageAllowlist | Where-Object { $_ -match '\.psm?1$' })) {
+            $path = Join-Path $repoRoot ($relative -replace '/', '\')
+            $bytes = [IO.File]::ReadAllBytes($path)
+            $hasUtf8Bom = $bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF
+            $hasNonAscii = @($bytes | Where-Object { $_ -gt 0x7F }).Count -gt 0
+            Assert-QvwTrue ($hasUtf8Bom -or -not $hasNonAscii)
+        }
+    }
+
     It-Qvw 'packages required entry points and excludes private state' {
         $testDrive = New-QvwTempDirectory
         try {
