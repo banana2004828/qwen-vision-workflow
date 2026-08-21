@@ -13,6 +13,19 @@ jobs:
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
+      - name: Diagnose each test file in Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          $repo = (Get-Location).Path
+          $files = @(Get-ChildItem -LiteralPath .\tests -Filter '*.Tests.ps1' -File -Recurse | Sort-Object FullName)
+          foreach ($file in $files) {
+            $relative = $file.FullName.Substring($repo.Length).TrimStart('\')
+            Write-Host ("::group::{0}" -f $relative)
+            powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tests\run.ps1 -Path $relative
+            $testExit = $LASTEXITCODE
+            Write-Host '::endgroup::'
+            if ($testExit -ne 0) { throw ("Targeted test file failed: {0}" -f $relative) }
+          }
       - name: Run full test suite
         shell: powershell
         run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tests\run.ps1
